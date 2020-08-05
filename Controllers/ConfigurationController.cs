@@ -14,7 +14,7 @@ namespace AzureStorageDemo.Controllers
             BlobsService = blobsService;
         }
 
-        [HttpGet("connection")]
+        [HttpGet("azureblob/connectionstring")]
         public IActionResult GetConnection()
         {
             return Ok(BlobsService.GetConnectionString());

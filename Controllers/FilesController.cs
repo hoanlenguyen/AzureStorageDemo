@@ -17,9 +17,9 @@ namespace AzureStorageDemo.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> UploadFile([FromForm] FileForm fileForm)
+        public async Task<IActionResult> UploadFile([FromForm] FileModel file)
         {
-            return Ok(await BlobsService.UploadFileAsync(fileForm));
+            return Ok(await BlobsService.UploadFileAsync(file));
         }
 
         [HttpGet("files")]
@@ -28,12 +28,24 @@ namespace AzureStorageDemo.Controllers
             return Ok(await BlobsService.GetAllFilesFromContainer());
         }
 
-        [HttpGet("download")]
+        [HttpGet("download/{fileName}")]
         public async Task<IActionResult> DownloadFile(string fileName)
         {
             var stream = await BlobsService.DownloadAsync(fileName);
             var contentType = "APPLICATION/octet-stream";
             return File(stream, contentType, fileName);
+        }
+
+        [HttpGet("getUrl/{fileName}")]
+        public async Task<IActionResult> GetUrl (string fileName)
+        {
+            return Ok(await BlobsService.GetFileUrl(fileName));
+        }
+
+        [HttpGet("container/policy")]
+        public async Task<IActionResult> GetAccessPolicy()
+        {
+            return Ok(await BlobsService.GetContainerPolicy());
         }
 
         [HttpDelete("{fileName}")]

@@ -1,5 +1,7 @@
-﻿using Azure.Storage.Blobs;
+﻿using Azure.Identity;
+using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
+using Azure.Storage.Sas;
 using AzureStorageDemo.Models;
 using System;
 using System.Collections.Generic;
@@ -12,9 +14,9 @@ namespace AzureStorageDemo.Service
     {
         private readonly string CONN_STRING = "AZURE_STORAGE_CONNECTION_STRING";
         private readonly string CONTAINER_NAME = "test";
-
-        //private readonly CloudBlobClient _client;
-        //private readonly CloudBlobContainer _container;
+        private readonly string AZURE_STORAGE_HOST = "http://127.0.0.1:10000";
+        private readonly string ACCOUNT_NAME = "devstoreaccount1";
+        private readonly string END_POINT = "https://127.0.0.1:10000/devstoreaccount1";
         private string connectionString { set; get; }
 
         private BlobContainerClient containerClient { set; get; }
@@ -24,9 +26,11 @@ namespace AzureStorageDemo.Service
         public BlobsStorageService()
         {
             connectionString = Environment.GetEnvironmentVariable(CONN_STRING);
-            //blobServiceClient = new BlobServiceClient(connectionString);
+            blobServiceClient = new BlobServiceClient(connectionString);
             containerClient = new BlobContainerClient(connectionString, CONTAINER_NAME);
             containerClient.CreateIfNotExistsAsync();
+            //containerClient.SetAccessPolicy(PublicAccessType.Blob, permissions)
+            //var con = blobServiceClient.GetBlobContainerClient(CONTAINER_NAME);
         }
 
         public string GetConnectionString()
@@ -34,9 +38,11 @@ namespace AzureStorageDemo.Service
             return connectionString;
         }
 
-        public async Task<bool> UploadFileAsync(FileForm fileForm)
+        public async Task<bool> UploadFileAsync(FileModel file)
         {
-            var file = fileForm.ToFileModel();
+            if (!file.IsValid())
+                return false;
+
             BlobClient blobClient = containerClient.GetBlobClient(file.Filename);
             MemoryStream stream = new MemoryStream(file.FileBytes);
             await blobClient.UploadAsync(stream, true);
@@ -53,11 +59,58 @@ namespace AzureStorageDemo.Service
             return list;
         }
 
+        public async Task<string> GetFileUrl(string fileName)
+        {
+            //BlobClient blobClient = containerClient.GetBlobClient(fileName);
+            //if (! await blobClient.ExistsAsync())
+            //    return null;
+
+            //return blobClient.Uri.AbsoluteUri;
+
+            ////var key = await blobServiceClient.GetUserDelegationKeyAsync(DateTimeOffset.UtcNow,
+            ////                                                       DateTimeOffset.UtcNow.AddDays(7));
+            
+            BlobServiceClient blobClient = new BlobServiceClient(new Uri(END_POINT),
+                                                     new DefaultAzureCredential());
+
+            UserDelegationKey key = await blobClient.GetUserDelegationKeyAsync(DateTimeOffset.UtcNow,
+                                                                   DateTimeOffset.UtcNow.AddDays(7));
+            BlobSasBuilder sasBuilder = new BlobSasBuilder()
+            {
+                BlobContainerName = CONTAINER_NAME,
+                BlobName = fileName,
+                Resource = "b",
+                StartsOn = DateTimeOffset.UtcNow,
+                ExpiresOn = DateTimeOffset.UtcNow.AddHours(1)
+            };
+
+            sasBuilder.SetPermissions(BlobAccountSasPermissions.Read);
+
+            string sasToken = sasBuilder.ToSasQueryParameters(key, ACCOUNT_NAME).ToString();
+
+            UriBuilder fullUri = new UriBuilder()
+            {
+                Scheme = "https",
+                Host = /*string.Format("{0}.blob.core.windows.net", accountName)*/END_POINT,
+                Path = string.Format("{0}/{1}", CONTAINER_NAME, fileName),
+                Query = sasToken
+            };
+
+            return fullUri.Uri.AbsoluteUri;
+
+        }
+
+        public async Task<string> GetContainerPolicy()
+        {
+            var policy = await containerClient.GetAccessPolicyAsync();
+            return policy.Value.BlobPublicAccess.ToString();
+        }
+
         public async Task<Stream> DownloadAsync(string fileName)
         {
             BlobClient blobClient = containerClient.GetBlobClient(fileName);
             BlobDownloadInfo download = await blobClient.DownloadAsync();
-            return download.Content;            
+            return download.Content;
         }
 
         public async Task<bool> DeleteAsync(string fileName)
