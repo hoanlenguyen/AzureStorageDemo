@@ -5,7 +5,6 @@ namespace AzureStorageDemo.Models
 {
     public class FileModel
     {
-        public string Data { get; set; }
 
         public string Filename { get; set; }
 
@@ -20,6 +19,8 @@ namespace AzureStorageDemo.Models
 
         [JsonIgnore]
         public byte[] FileBytes { get; set; }
+
+        public string Data { get; set; }
 
         public int ResourceId { get; set; }
     }

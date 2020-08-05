@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace AzureStorageDemo.Service
 {
-    public class BlobsService
+    public class BlobsStorageService
     {
         private readonly string CONN_STRING = "AZURE_STORAGE_CONNECTION_STRING";
         private readonly string CONTAINER_NAME = "test";
@@ -21,7 +21,7 @@ namespace AzureStorageDemo.Service
 
         private BlobServiceClient blobServiceClient { set; get; }
 
-        public BlobsService()
+        public BlobsStorageService()
         {
             connectionString = Environment.GetEnvironmentVariable(CONN_STRING);
             //blobServiceClient = new BlobServiceClient(connectionString);

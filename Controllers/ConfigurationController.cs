@@ -7,9 +7,9 @@ namespace AzureStorageDemo.Controllers
     [ApiController]
     public class ConfigurationController : ControllerBase
     {
-        private readonly BlobsService BlobsService;
+        private readonly BlobsStorageService BlobsService;
 
-        public ConfigurationController(BlobsService blobsService)
+        public ConfigurationController(BlobsStorageService blobsService)
         {
             BlobsService = blobsService;
         }

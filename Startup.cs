@@ -20,7 +20,7 @@ namespace AzureStorageDemo
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-            services.AddScoped<BlobsService>();
+            services.AddScoped<BlobsStorageService>();
             services.AddSwaggerGen();
         }
 
