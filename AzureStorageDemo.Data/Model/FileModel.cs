@@ -5,7 +5,7 @@ using System.ComponentModel;
 using System.IO;
 using System.Text.RegularExpressions;
 
-namespace AzureStorageDemo.Models
+namespace AzureStorageDemo.Data.Model
 {
     public class FileModel
     {

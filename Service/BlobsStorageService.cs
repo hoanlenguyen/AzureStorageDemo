@@ -2,7 +2,7 @@
 using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
 using Azure.Storage.Sas;
-using AzureStorageDemo.Models;
+using AzureStorageDemo.Data.Model;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -69,9 +69,10 @@ namespace AzureStorageDemo.Service
 
             ////var key = await blobServiceClient.GetUserDelegationKeyAsync(DateTimeOffset.UtcNow,
             ////                                                       DateTimeOffset.UtcNow.AddDays(7));
-            
-            BlobServiceClient blobClient = new BlobServiceClient(new Uri(END_POINT),
-                                                     new DefaultAzureCredential());
+            //string blobEndpoint = string.Format("https://{0}.blob.core.windows.net", ACCOUNT_NAME);
+            string blobEndpoint = END_POINT;
+            BlobServiceClient blobClient = new BlobServiceClient(new Uri(blobEndpoint),
+                                                                 new DefaultAzureCredential());
 
             UserDelegationKey key = await blobClient.GetUserDelegationKeyAsync(DateTimeOffset.UtcNow,
                                                                    DateTimeOffset.UtcNow.AddDays(7));
@@ -97,7 +98,6 @@ namespace AzureStorageDemo.Service
             };
 
             return fullUri.Uri.AbsoluteUri;
-
         }
 
         public async Task<string> GetContainerPolicy()

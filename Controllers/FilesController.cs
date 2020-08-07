@@ -1,4 +1,4 @@
-﻿using AzureStorageDemo.Models;
+﻿using AzureStorageDemo.Data.Model;
 using AzureStorageDemo.Service;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
@@ -37,7 +37,7 @@ namespace AzureStorageDemo.Controllers
         }
 
         [HttpGet("getUrl/{fileName}")]
-        public async Task<IActionResult> GetUrl (string fileName)
+        public async Task<IActionResult> GetUrl(string fileName)
         {
             return Ok(await BlobsService.GetFileUrl(fileName));
         }
