@@ -5,7 +5,9 @@ VisualStudioVersion = 16.0.29613.14
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AzureStorageDemo", "AzureStorageDemo.csproj", "{48E62445-9C8E-4442-9272-F121E834DFE0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AzureStorageDemo.Data", "AzureStorageDemo.Data\AzureStorageDemo.Data.csproj", "{020E62E0-E9CC-40FD-82C7-CF2CCD7C29B7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AzureStorageDemo.Data", "AzureStorageDemo.Data\AzureStorageDemo.Data.csproj", "{020E62E0-E9CC-40FD-82C7-CF2CCD7C29B7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AzureStorageDemo.Service", "AzureStorageDemo.Service\AzureStorageDemo.Service.csproj", "{F1DA8459-D6E7-467F-B2DA-16A43D094063}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{020E62E0-E9CC-40FD-82C7-CF2CCD7C29B7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{020E62E0-E9CC-40FD-82C7-CF2CCD7C29B7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{020E62E0-E9CC-40FD-82C7-CF2CCD7C29B7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F1DA8459-D6E7-467F-B2DA-16A43D094063}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F1DA8459-D6E7-467F-B2DA-16A43D094063}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F1DA8459-D6E7-467F-B2DA-16A43D094063}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F1DA8459-D6E7-467F-B2DA-16A43D094063}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

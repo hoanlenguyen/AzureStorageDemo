@@ -7,3 +7,5 @@
 /.vs/AzureStorageDemo
 /AzureStorageDemo.Data/obj
 /AzureStorageDemo.Data/bin/Debug/netcoreapp3.1
+/AzureStorageDemo.Service/bin/Debug/netcoreapp3.1
+/AzureStorageDemo.Service/obj
